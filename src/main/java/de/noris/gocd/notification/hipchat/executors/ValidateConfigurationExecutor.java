@@ -47,8 +47,6 @@ public class ValidateConfigurationExecutor implements RequestExecutor {
             }
         }
 
-        HipchatNotificationPlugin.LOG.info("Validation results: "+result.size());
-
         return DefaultGoPluginApiResponse.success(GSON.toJson(result));
     }
 }

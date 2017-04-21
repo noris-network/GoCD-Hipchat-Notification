@@ -28,38 +28,46 @@ public class PluginSettings {
             create();
 
     @Expose
-    @SerializedName("go_server_url")
-    private String goServerUrl;
+    @SerializedName("notification_type")
+    private String notificationType;
 
     @Expose
-    @SerializedName("api_user")
-    private String apiUser;
+    @SerializedName("hipchat_message")
+    private String message;
 
     @Expose
-    @SerializedName("api_key")
-    private String apiKey;
+    @SerializedName("hipchat_room")
+    private String room;
 
     @Expose
-    @SerializedName("api_url")
-    private String apiUrl;
+    @SerializedName("hipchat_token")
+    private String token;
+
+    @Expose
+    @SerializedName("hipchat_server_url")
+    private String serverUrl;
 
     public static PluginSettings fromJSON(String json) {
         return GSON.fromJson(json, PluginSettings.class);
     }
 
-    public String getApiUser() {
-        return apiUser;
+    public String getNotificationType() {
+        return notificationType;
     }
 
-    public String getApiKey() {
-        return apiKey;
+    public String getMessage() {
+        return message;
     }
 
-    public String getApiUrl() {
-        return apiUrl;
+    public String getRoom() {
+        return room;
     }
 
-    public String getGoServerUrl() {
-        return goServerUrl;
+    public String getToken() {
+        return token;
+    }
+
+    public String getServerUrl() {
+        return serverUrl;
     }
 }

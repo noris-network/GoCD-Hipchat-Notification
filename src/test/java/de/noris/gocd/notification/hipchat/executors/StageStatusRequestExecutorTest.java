@@ -17,6 +17,7 @@
 package de.noris.gocd.notification.hipchat.executors;
 
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
+import com.thoughtworks.go.plugin.api.response.execution.ExecutionResult;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
@@ -29,8 +30,9 @@ public class StageStatusRequestExecutorTest {
     public void shouldRenderASuccessResponseIfNotificationWasSent() throws Exception {
         GoPluginApiResponse response = new StageStatusRequestExecutor(null, null) {
             @Override
-            protected void sendNotification() {
+            protected ExecutionResult sendNotification() {
                 // do nothing!
+                return null;
             }
         }.execute();
 
@@ -42,7 +44,7 @@ public class StageStatusRequestExecutorTest {
     public void shouldRenderAnErrorResponseIfNotificationWasNotSent() throws Exception {
         GoPluginApiResponse response = new StageStatusRequestExecutor(null, null) {
             @Override
-            protected void sendNotification() {
+            protected ExecutionResult sendNotification() {
                 throw new RuntimeException("Boom!");
             }
         }.execute();

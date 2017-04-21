@@ -25,21 +25,26 @@ Ensure that the keys you use are also declared in the GetPluginConfigurationExec
     <option value="failure">Failure</option>
     <option value="other">Other</option>
   </select>
-  <span class="form_error" ng-show="GOINPUTNAME[notification_type].$error.server">{{ GOINPUTNAME[NotificationType].$error.server }}</span>
+  <span class="form_error" ng-show="GOINPUTNAME[notification_type].$error.server">{{ GOINPUTNAME[notification_type].$error.server }}</span>
 </div>
 <div class="form_item_block">
   <label>Notification message (leave blank for default):</label>
   <label>Environment variables accessible with $ notation</label>
   <input type="text" ng-model="hipchat_message"/>
-  <span class="form_error" ng-show="GOINPUTNAME[hipchat_message].$error.server">{{ GOINPUTNAME[HipchatMessage].$error.server }}</span>
+  <span class="form_error" ng-show="GOINPUTNAME[hipchat_message].$error.server">{{ GOINPUTNAME[hipchat_message].$error.server }}</span>
+</div>
+<div class="form_item_block">
+  <label>Server URL:</label>
+  <input type="text" ng-model="hipchat_server_url"/>
+  <span class="form_error" ng-show="GOINPUTNAME[hipchat_server_url].$error.server">{{ GOINPUTNAME[hipchat_server_url].$error.server }}</span>
 </div>
 <div class="form_item_block">
   <label>Room to notify:</label>
   <input type="text" ng-model="hipchat_room"/>
-  <span class="form_error" ng-show="GOINPUTNAME[hipchat_room].$error.server">{{ GOINPUTNAME[HipchatRoom].$error.server }}</span>
+  <span class="form_error" ng-show="GOINPUTNAME[hipchat_room].$error.server">{{ GOINPUTNAME[hipchat_room].$error.server }}</span>
 </div>
 <div class="form_item_block">
   <label>HipChat API key:</label>
-  <input type="text" ng-model="hipchat_api_key"/>
-  <span class="form_error" ng-show="GOINPUTNAME[hipchat_api_key].$error.server">{{ GOINPUTNAME[HipchatApiKey].$error.server }}</span>
+  <input type="text" ng-model="hipchat_token"/>
+  <span class="form_error" ng-show="GOINPUTNAME[hipchat_token].$error.server">{{ GOINPUTNAME[hipchat_token].$error.server }}</span>
 </div>

@@ -34,8 +34,10 @@ public class GetPluginConfigurationExecutor implements RequestExecutor {
 
     public static final Field NOTIFICATION_TYPE = new NonBlankField("notification_type", "Notification type", null, true, false, "0");
     public static final Field HIPCHAT_MESSAGE = new Field("hipchat_message", "Message", null, true, false, "1");
-    public static final Field HIPCHAT_ROOM = new NonBlankField("hipchat_room", "Room", null, true, false, "2");
-    public static final Field HIPCHAT_API_KEY = new NonBlankField("hipchat_api_key", "API Key", null, true, true, "3");
+    public static final Field HIPCHAT_SERVER_URL = new NonBlankField("hipchat_server_url", "Server URL", "https://api.hipchat.com", true, true, "2");
+    public static final Field HIPCHAT_ROOM = new NonBlankField("hipchat_room", "Room", null, true, false, "3");
+    public static final Field HIPCHAT_TOKEN = new NonBlankField("hipchat_token", "API Token", null, true, true, "4");
+
 
     public static final Map<String, Field> FIELDS = new LinkedHashMap<>();
 
@@ -43,8 +45,9 @@ public class GetPluginConfigurationExecutor implements RequestExecutor {
         FIELDS.put(NOTIFICATION_TYPE.key(), NOTIFICATION_TYPE);
 
         FIELDS.put(HIPCHAT_MESSAGE.key(), HIPCHAT_MESSAGE);
+        FIELDS.put(HIPCHAT_SERVER_URL.key(), HIPCHAT_SERVER_URL);
         FIELDS.put(HIPCHAT_ROOM.key(), HIPCHAT_ROOM);
-        FIELDS.put(HIPCHAT_API_KEY.key(), HIPCHAT_API_KEY);
+        FIELDS.put(HIPCHAT_TOKEN.key(), HIPCHAT_TOKEN);
     }
 
     public GoPluginApiResponse execute() {

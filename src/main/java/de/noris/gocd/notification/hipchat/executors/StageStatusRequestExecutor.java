@@ -16,15 +16,28 @@
 
 package de.noris.gocd.notification.hipchat.executors;
 
-import de.noris.gocd.notification.hipchat.PluginRequest;
-import de.noris.gocd.notification.hipchat.RequestExecutor;
+import com.thoughtworks.go.plugin.api.response.execution.ExecutionResult;
+import de.noris.gocd.notification.hipchat.*;
 import de.noris.gocd.notification.hipchat.requests.StageStatusRequest;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
+import javax.net.ssl.SSLContext;
+import java.io.IOException;
+import java.net.URI;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -43,8 +56,13 @@ public class StageStatusRequestExecutor implements RequestExecutor {
     public GoPluginApiResponse execute() throws Exception {
         HashMap<String, Object> responseJson = new HashMap<>();
         try {
-            sendNotification();
-            responseJson.put("status", "success");
+            ExecutionResult result = sendNotification();
+            if (result.isSuccessful()) {
+                responseJson.put("status", "success");
+            } else {
+                responseJson.put("status", "failure");
+                responseJson.put("messages", result.getMessages());
+            }
         } catch (Exception e) {
             responseJson.put("status", "failure");
             responseJson.put("messages", Arrays.asList(e.getMessage()));
@@ -52,10 +70,53 @@ public class StageStatusRequestExecutor implements RequestExecutor {
         return new DefaultGoPluginApiResponse(200, GSON.toJson(responseJson));
     }
 
-    protected void sendNotification() throws Exception {
-        // TODO: Implement this. The request.pipeline object has all the details about the pipeline, materials, stages and jobs
-        // If you need access to settings like API keys, URLs, then call PluginRequest#getPluginSettings
-//        PluginSettings pluginSettings = pluginRequest.getPluginSettings();
-        //throw new UnsupportedOperationException();
+    protected ExecutionResult sendNotification() throws Exception {
+        String pipelineName    = request.pipeline.name;
+        String pipelineCounter = request.pipeline.counter;
+        String pipelineStage   = request.pipeline.stage.name;
+
+        PluginSettings settings = pluginRequest.getPluginSettings();
+
+        String roomName = settings.getRoom();
+        String token    = settings.getToken();
+        String message  = settings.getMessage();
+        String serverUrl = settings.getServerUrl();
+
+        HipchatNotificationPlugin.LOG.debug("Sending notification to "+roomName+" "+message);
+
+        String url = serverUrl + "/v2/room/" + roomName + "/notification";
+
+        SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+        sslContext.init(null, null, new SecureRandom());
+        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext);
+
+        URI uri = new URIBuilder()
+                .setScheme("https")
+                .setHost(serverUrl)
+                .setPath("/v2/room/"+roomName+"/notification")
+                .build();
+
+        HttpPost httpPost = new HttpPost(uri);
+        httpPost.addHeader("Authorization", "Bearer "+token);
+        httpPost.addHeader("Content-Type", "application/json");
+        httpPost.addHeader("Charset", "UTF-8");
+        httpPost.setEntity(new StringEntity(GSON.toJson(new HipchatRequest("green", message))));
+
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+
+        ResponseHandler<ExecutionResult> handler = new ResponseHandler<ExecutionResult>() {
+            @Override
+            public ExecutionResult handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
+                if (response.getStatusLine().getStatusCode() == 204) {
+                    return ExecutionResult.success("Hipchat notified");
+                } else {
+                    HipchatNotificationPlugin.LOG.warn("Hipchat notification failed ("+response.getStatusLine().getStatusCode()+", "+response.getStatusLine().getReasonPhrase()+")");
+                    return ExecutionResult.failure("Hipchat notification failed ("+response.getStatusLine().getStatusCode()+")");
+                }
+            }
+        };
+
+        return httpClient.execute(httpPost, handler);
+
     }
 }
