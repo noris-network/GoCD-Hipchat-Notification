@@ -24,8 +24,8 @@ project.ext.pluginDesc = [
     id         : 'de.noris.gocd.notification.hipchat',
     version    : project.version,
     goCdVersion: '16.2.1',
-    name       : 'Notification Plugin that writes to a HipChat room',
-    description: 'Notification Plugin that writes to a HipChat room',
+    name       : 'Hipchat Notification Plugin',
+    description: 'Notification Plugin that writes to a Hipchat room',
     vendorName : 'noris network AG',
     vendorUrl  : 'https://www.noris.net'
 ]

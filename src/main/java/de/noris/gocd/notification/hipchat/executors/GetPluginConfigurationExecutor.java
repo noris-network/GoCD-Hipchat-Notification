@@ -32,22 +32,23 @@ public class GetPluginConfigurationExecutor implements RequestExecutor {
 
     private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
-    public static final Field GO_SERVER_URL = new NonBlankField("go_server_url", "Go Server URL", null, true, false, "0");
-    public static final Field API_SERVER_URL = new NonBlankField("api_url", "API URL", null, true, false, "1");
-    public static final Field API_USER = new NonBlankField("api_user", "API User", null, true, false, "2");
-    public static final Field API_KEY = new NonBlankField("api_key", "API Key", null, true, false, "3");
+    public static final Field NOTIFICATION_TYPE = new NonBlankField("notification_type", "Notification type", null, true, false, "0");
+    public static final Field HIPCHAT_MESSAGE = new Field("hipchat_message", "Message", null, true, false, "1");
+    public static final Field HIPCHAT_ROOM = new NonBlankField("hipchat_room", "Room", null, true, false, "2");
+    public static final Field HIPCHAT_API_KEY = new NonBlankField("hipchat_api_key", "API Key", null, true, true, "3");
 
     public static final Map<String, Field> FIELDS = new LinkedHashMap<>();
 
     static {
-        FIELDS.put(GO_SERVER_URL.key(), GO_SERVER_URL);
+        FIELDS.put(NOTIFICATION_TYPE.key(), NOTIFICATION_TYPE);
 
-        FIELDS.put(API_SERVER_URL.key(), API_SERVER_URL);
-        FIELDS.put(API_USER.key(), API_USER);
-        FIELDS.put(API_KEY.key(), API_KEY);
+        FIELDS.put(HIPCHAT_MESSAGE.key(), HIPCHAT_MESSAGE);
+        FIELDS.put(HIPCHAT_ROOM.key(), HIPCHAT_ROOM);
+        FIELDS.put(HIPCHAT_API_KEY.key(), HIPCHAT_API_KEY);
     }
 
     public GoPluginApiResponse execute() {
         return new DefaultGoPluginApiResponse(200, GSON.toJson(FIELDS));
     }
 }
+

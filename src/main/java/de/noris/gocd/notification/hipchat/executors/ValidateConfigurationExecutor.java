@@ -16,6 +16,7 @@
 
 package de.noris.gocd.notification.hipchat.executors;
 
+import de.noris.gocd.notification.hipchat.HipchatNotificationPlugin;
 import de.noris.gocd.notification.hipchat.RequestExecutor;
 import de.noris.gocd.notification.hipchat.requests.ValidatePluginSettings;
 import com.google.gson.Gson;
@@ -45,6 +46,8 @@ public class ValidateConfigurationExecutor implements RequestExecutor {
                 result.add(validationError);
             }
         }
+
+        HipchatNotificationPlugin.LOG.info("Validation results: "+result.size());
 
         return DefaultGoPluginApiResponse.success(GSON.toJson(result));
     }
