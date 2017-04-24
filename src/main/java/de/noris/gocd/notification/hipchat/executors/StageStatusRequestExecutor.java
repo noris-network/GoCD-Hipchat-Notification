@@ -79,8 +79,32 @@ public class StageStatusRequestExecutor implements RequestExecutor {
 
         String roomName  = settings.getRoom();
         String token     = settings.getToken();
-        String message   = settings.getMessage();
         String serverUrl = settings.getServerUrl();
+
+        boolean doNotify = false;
+        String message   = "";
+        String color     = "";
+        HipchatNotificationPlugin.LOG.info("state is "+request.pipeline.stage.state);
+        if (request.pipeline.stage.state.equals("Building")) {
+            doNotify = settings.isNotifyStart();
+            message  = settings.getMessageStart();
+            color    = settings.getColorStart();
+        } else if (request.pipeline.stage.state.equals("Passed")) {
+            doNotify = settings.isNotifySuccess();
+            message  = settings.getMessageSuccess();
+            color    = settings.getColorSuccess();
+        } else if (request.pipeline.stage.state.equals("Failed")) {
+            doNotify = settings.isNotifyFailure();
+            message  = settings.getMessageFailure();
+            color    = settings.getColorFailure();
+        } else {
+            HipchatNotificationPlugin.LOG.warn("Unknown stage state: "+request.pipeline.stage.state);
+        }
+
+        if (!doNotify) {
+            HipchatNotificationPlugin.LOG.debug("Hipchat notification for this event is turned off in configuration");
+            return ExecutionResult.success("Hipchat notification for this event is turned off in configuration");
+        }
 
         HipchatNotificationPlugin.LOG.debug("Sending notification to "+roomName+" "+message);
 
@@ -100,7 +124,7 @@ public class StageStatusRequestExecutor implements RequestExecutor {
         httpPost.addHeader("Authorization", "Bearer "+token);
         httpPost.addHeader("Content-Type", "application/json");
         httpPost.addHeader("Charset", "UTF-8");
-        httpPost.setEntity(new StringEntity(GSON.toJson(new HipchatRequest("green", message))));
+        httpPost.setEntity(new StringEntity(GSON.toJson(new HipchatRequest(color, message))));
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
 

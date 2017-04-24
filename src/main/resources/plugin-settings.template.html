@@ -19,24 +19,14 @@ This page contains the view for your settings.
 Ensure that the keys you use are also declared in the GetPluginConfigurationExecutor class
 -->
 <div class="form_item_block">
-  <label>Notification type:<span class="asterisk">*</span></label>
-  <select ng-model="notification_type" ng-required="true">
-    <option value="success" selected="selected">Success</option>
-    <option value="failure">Failure</option>
-    <option value="other">Other</option>
-  </select>
-  <span class="form_error" ng-show="GOINPUTNAME[notification_type].$error.server">{{ GOINPUTNAME[notification_type].$error.server }}</span>
-</div>
-<div class="form_item_block">
-  <label>Notification message (leave blank for default):</label>
-  <label>Environment variables accessible with $ notation</label>
-  <input type="text" ng-model="hipchat_message"/>
-  <span class="form_error" ng-show="GOINPUTNAME[hipchat_message].$error.server">{{ GOINPUTNAME[hipchat_message].$error.server }}</span>
-</div>
-<div class="form_item_block">
   <label>Server URL:</label>
   <input type="text" ng-model="hipchat_server_url"/>
   <span class="form_error" ng-show="GOINPUTNAME[hipchat_server_url].$error.server">{{ GOINPUTNAME[hipchat_server_url].$error.server }}</span>
+</div>
+<div class="form_item_block">
+  <label>HipChat API key:</label>
+  <input type="text" ng-model="hipchat_token"/>
+  <span class="form_error" ng-show="GOINPUTNAME[hipchat_token].$error.server">{{ GOINPUTNAME[hipchat_token].$error.server }}</span>
 </div>
 <div class="form_item_block">
   <label>Room to notify:</label>
@@ -44,7 +34,82 @@ Ensure that the keys you use are also declared in the GetPluginConfigurationExec
   <span class="form_error" ng-show="GOINPUTNAME[hipchat_room].$error.server">{{ GOINPUTNAME[hipchat_room].$error.server }}</span>
 </div>
 <div class="form_item_block">
-  <label>HipChat API key:</label>
-  <input type="text" ng-model="hipchat_token"/>
-  <span class="form_error" ng-show="GOINPUTNAME[hipchat_token].$error.server">{{ GOINPUTNAME[hipchat_token].$error.server }}</span>
+  <label>Notify on job start:</label>
+  <select ng-model="notify_start" ng-required="true">
+    <option value="true" selected="selected">True</option>
+    <option value="false">False</option>
+  </select>
+  <span class="form_error" ng-show="GOINPUTNAME[notify_start].$error.server">{{ GOINPUTNAME[notify_start].$error.server }}</span>
+</div>
+<div class="form_item_block">
+  <label>Job start message:</label>
+  <label>Environment variables accessible with $ notation</label>
+  <input type="text" ng-model="message_start"/>
+  <span class="form_error" ng-show="GOINPUTNAME[message_start].$error.server">{{ GOINPUTNAME[message_start].$error.server }}</span>
+</div>
+<div class="form_item_block">
+  <label>Color for job start message:<span class="asterisk">*</span></label>
+  <select ng-model="color_start" ng-required="true">
+    <option value="yellow" selected="selected">Yellow</option>
+    <option value="green">Green</option>
+    <option value="red">Red</option>
+    <option value="purple">Purple</option>
+    <option value="gray">Gray</option>
+    <option value="random">Random</option>
+  </select>
+  <span class="form_error" ng-show="GOINPUTNAME[color_start].$error.server">{{ GOINPUTNAME[color_start].$error.server }}</span>
+</div>
+
+<div class="form_item_block">
+  <label>Notify on success:</label>
+  <select ng-model="notify_success" ng-required="true">
+    <option value="true" selected="selected">True</option>
+    <option value="false">False</option>
+  </select>
+  <span class="form_error" ng-show="GOINPUTNAME[notify_success].$error.server">{{ GOINPUTNAME[notify_success].$error.server }}</span>
+</div>
+<div class="form_item_block">
+  <label>Success message:</label>
+  <label>Environment variables accessible with $ notation</label>
+  <input type="text" ng-model="message_success"/>
+  <span class="form_error" ng-show="GOINPUTNAME[message_success].$error.server">{{ GOINPUTNAME[message_success].$error.server }}</span>
+</div>
+<div class="form_item_block">
+  <label>Color for success message:<span class="asterisk">*</span></label>
+  <select ng-model="color_success" ng-required="true">
+    <option value="yellow">Yellow</option>
+    <option value="green" selected="selected">Green</option>
+    <option value="red">Red</option>
+    <option value="purple">Purple</option>
+    <option value="gray">Gray</option>
+    <option value="random">Random</option>
+  </select>
+  <span class="form_error" ng-show="GOINPUTNAME[color_success].$error.server">{{ GOINPUTNAME[color_success].$error.server }}</span>
+</div>
+
+<div class="form_item_block">
+  <label>Notify on failure:</label>
+  <select ng-model="notify_failure" ng-required="true">
+    <option value="true" selected="selected">True</option>
+    <option value="false">False</option>
+  </select>
+  <span class="form_error" ng-show="GOINPUTNAME[notify_failure].$error.server">{{ GOINPUTNAME[notify_failure].$error.server }}</span>
+</div>
+<div class="form_item_block">
+  <label>Failure message:</label>
+  <label>Environment variables accessible with $ notation</label>
+  <input type="text" ng-model="message_failure"/>
+  <span class="form_error" ng-show="GOINPUTNAME[message_failure].$error.server">{{ GOINPUTNAME[message_failure].$error.server }}</span>
+</div>
+<div class="form_item_block">
+  <label>Color for failure message:<span class="asterisk">*</span></label>
+  <select ng-model="color_failure" ng-required="true">
+    <option value="yellow">Yellow</option>
+    <option value="green">Green</option>
+    <option value="red" selected="selected">Red</option>
+    <option value="purple">Purple</option>
+    <option value="gray">Gray</option>
+    <option value="random">Random</option>
+  </select>
+  <span class="form_error" ng-show="GOINPUTNAME[color_failure].$error.server">{{ GOINPUTNAME[color_failure].$error.server }}</span>
 </div>

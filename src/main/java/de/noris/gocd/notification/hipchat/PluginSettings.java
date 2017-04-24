@@ -21,42 +21,61 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-// Implement any settings that your plugin needs
 public class PluginSettings {
     private static final Gson GSON = new GsonBuilder().
             excludeFieldsWithoutExposeAnnotation().
             create();
 
     @Expose
-    @SerializedName("notification_type")
-    private String notificationType;
-
-    @Expose
-    @SerializedName("hipchat_message")
-    private String message;
-
-    @Expose
-    @SerializedName("hipchat_room")
-    private String room;
+    @SerializedName("hipchat_server_url")
+    private String serverUrl;
 
     @Expose
     @SerializedName("hipchat_token")
     private String token;
 
     @Expose
-    @SerializedName("hipchat_server_url")
-    private String serverUrl;
+    @SerializedName("hipchat_room")
+    private String room;
+
+    @Expose
+    @SerializedName("notify_start")
+    private boolean notifyStart;
+
+    @Expose
+    @SerializedName("message_start")
+    private String messageStart;
+
+    @Expose
+    @SerializedName("color_start")
+    private String colorStart;
+
+    @Expose
+    @SerializedName("notify_success")
+    private boolean notifySuccess;
+
+    @Expose
+    @SerializedName("message_success")
+    private String messageSuccess;
+
+    @Expose
+    @SerializedName("color_success")
+    private String colorSuccess;
+
+    @Expose
+    @SerializedName("notify_failure")
+    private boolean notifyFailure;
+
+    @Expose
+    @SerializedName("message_failure")
+    private String messageFailure;
+
+    @Expose
+    @SerializedName("color_failure")
+    private String colorFailure;
 
     public static PluginSettings fromJSON(String json) {
         return GSON.fromJson(json, PluginSettings.class);
-    }
-
-    public String getNotificationType() {
-        return notificationType;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
     public String getRoom() {
@@ -70,4 +89,23 @@ public class PluginSettings {
     public String getServerUrl() {
         return serverUrl;
     }
+
+    public boolean isNotifyStart() { return notifyStart; }
+
+    public String getMessageStart() { return messageStart; }
+
+    public boolean isNotifySuccess() { return notifySuccess; }
+
+    public String getMessageSuccess() { return messageSuccess; }
+
+    public String getColorSuccess() { return colorSuccess; }
+
+    public boolean isNotifyFailure() { return notifyFailure; }
+
+    public String getMessageFailure() { return messageFailure; }
+
+    public String getColorFailure() { return colorFailure; }
+
+    public String getColorStart() { return colorStart; }
+
 }
