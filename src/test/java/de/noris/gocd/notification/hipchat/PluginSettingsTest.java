@@ -25,14 +25,10 @@ public class PluginSettingsTest {
     @Test
     public void shouldDeserializeFromJSON() throws Exception {
         PluginSettings pluginSettings = PluginSettings.fromJSON("{" +
-                "\"notification_type\": \"https://build.go.cd/go\", " +
-                "\"hipchat_message\": \"bob\", " +
                 "\"hipchat_room\": \"p@ssw0rd\", " +
                 "\"hipchat_api_key\": \"https://cloud.example.com/api/v1\" " +
                 "}");
 
-        assertThat(pluginSettings.getNotificationType(), is("https://build.go.cd/go"));
-        assertThat(pluginSettings.getMessage(), is("bob"));
         assertThat(pluginSettings.getRoom(), is("p@ssw0rd"));
         assertThat(pluginSettings.getToken(), is("https://cloud.example.com/api/v1"));
     }

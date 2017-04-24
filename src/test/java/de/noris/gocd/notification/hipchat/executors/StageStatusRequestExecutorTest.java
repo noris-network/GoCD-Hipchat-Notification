@@ -30,7 +30,7 @@ public class StageStatusRequestExecutorTest {
     public void shouldRenderASuccessResponseIfNotificationWasSent() throws Exception {
         GoPluginApiResponse response = new StageStatusRequestExecutor(null, null) {
             @Override
-            protected ExecutionResult sendNotification() {
+            protected ExecutionResult doSendNotification(String roomName, String message, String color, String serverUrl, String token) {
                 // do nothing!
                 return null;
             }
@@ -44,7 +44,7 @@ public class StageStatusRequestExecutorTest {
     public void shouldRenderAnErrorResponseIfNotificationWasNotSent() throws Exception {
         GoPluginApiResponse response = new StageStatusRequestExecutor(null, null) {
             @Override
-            protected ExecutionResult sendNotification() {
+            protected ExecutionResult doSendNotification(String roomName, String message, String color, String serverUrl, String token) {
                 throw new RuntimeException("Boom!");
             }
         }.execute();
