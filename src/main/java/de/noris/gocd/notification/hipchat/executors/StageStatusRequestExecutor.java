@@ -77,9 +77,9 @@ public class StageStatusRequestExecutor implements RequestExecutor {
 
         PluginSettings settings = pluginRequest.getPluginSettings();
 
-        String roomName = settings.getRoom();
-        String token    = settings.getToken();
-        String message  = settings.getMessage();
+        String roomName  = settings.getRoom();
+        String token     = settings.getToken();
+        String message   = settings.getMessage();
         String serverUrl = settings.getServerUrl();
 
         HipchatNotificationPlugin.LOG.debug("Sending notification to "+roomName+" "+message);
