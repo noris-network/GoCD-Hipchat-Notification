@@ -32,7 +32,11 @@ public class StageStatusRequestExecutorTest {
             @Override
             protected ExecutionResult doSendNotification(String roomName, String message, String color, String serverUrl, String token) {
                 // do nothing!
-                return null;
+                return ExecutionResult.success("ok");
+            }
+            @Override
+            protected ExecutionResult maybeSendNotification() {
+                return doSendNotification("room", "message", "color", "url", "token");
             }
         }.execute();
 
@@ -46,6 +50,10 @@ public class StageStatusRequestExecutorTest {
             @Override
             protected ExecutionResult doSendNotification(String roomName, String message, String color, String serverUrl, String token) {
                 throw new RuntimeException("Boom!");
+            }
+            @Override
+            protected ExecutionResult maybeSendNotification() {
+                return doSendNotification("room", "message", "color", "url", "token");
             }
         }.execute();
 
