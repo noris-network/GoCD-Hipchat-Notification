@@ -1,7 +1,6 @@
-# Notification plugin skeleton
+# Hipchat Notification plugin
 
-This is merely a skeleton plugin that plugin developers can fork to get quickly
-started with writing notification plugins for GoCD.
+This plugin can send notifications to HipChat.
 
 ## Getting started
 
@@ -15,10 +14,17 @@ started with writing notification plugins for GoCD.
 
 To build the jar, run `./gradlew clean test assemble`
 
+## Open problems
+
+* I can't figure out how to prepopulate the configuration with default values
+* There seems to be no indication whether the current stage is the last one in a pipeline. This prevents us from notifying only once per pipeline.
+
+As a consequence: would using a task plugin be more appropriate?
+
 ## License
 
 ```plain
-Copyright 2016 ThoughtWorks, Inc.
+Copyright 2016 ThoughtWorks, Inc. and noris network AG
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
