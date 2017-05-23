@@ -18,6 +18,7 @@
 This page contains the view for your settings.
 Ensure that the keys you use are also declared in the GetPluginConfigurationExecutor class
 -->
+<h3>General Configuration</h3>
 <div class="form_item_block">
   <label>Server URL:</label>
   <input type="text" ng-model="hipchat_server_url"/>
@@ -33,8 +34,22 @@ Ensure that the keys you use are also declared in the GetPluginConfigurationExec
   <input type="text" ng-model="hipchat_room"/>
   <span class="form_error" ng-show="GOINPUTNAME[hipchat_room].$error.server">{{ GOINPUTNAME[hipchat_room].$error.server }}</span>
 </div>
+<!-- we do not have any information about stages, so I commented this option -->
+<!--
 <div class="form_item_block">
-  <label>Notify on job start:</label>
+  <label>Notify for each stage individually:</label>
+  <select ng-model="notify_per_stage" ng-required="true">
+    <option value="true" selected="selected">True</option>
+    <option value="false">False</option>
+  </select>
+  <span class="form_error" ng-show="GOINPUTNAME[notify_per_stage].$error.server">{{ GOINPUTNAME[notify_per_stage].$error.server }}</span>
+</div>
+-->
+
+<hr />
+<h3>Notifications for pipeline start</h3>
+<div class="form_item_block">
+  <label>Notify on pipeline start:</label>
   <select ng-model="notify_start" ng-required="true">
     <option value="true" selected="selected">True</option>
     <option value="false">False</option>
@@ -60,6 +75,8 @@ Ensure that the keys you use are also declared in the GetPluginConfigurationExec
   <span class="form_error" ng-show="GOINPUTNAME[color_start].$error.server">{{ GOINPUTNAME[color_start].$error.server }}</span>
 </div>
 
+<hr />
+<h3>Notifications for pipeline success</h3>
 <div class="form_item_block">
   <label>Notify on success:</label>
   <select ng-model="notify_success" ng-required="true">
@@ -87,6 +104,8 @@ Ensure that the keys you use are also declared in the GetPluginConfigurationExec
   <span class="form_error" ng-show="GOINPUTNAME[color_success].$error.server">{{ GOINPUTNAME[color_success].$error.server }}</span>
 </div>
 
+<hr />
+<h3>Notifications for pipeline failure</h3>
 <div class="form_item_block">
   <label>Notify on failure:</label>
   <select ng-model="notify_failure" ng-required="true">
@@ -112,4 +131,20 @@ Ensure that the keys you use are also declared in the GetPluginConfigurationExec
     <option value="random">Random</option>
   </select>
   <span class="form_error" ng-show="GOINPUTNAME[color_failure].$error.server">{{ GOINPUTNAME[color_failure].$error.server }}</span>
+</div>
+
+<div class="help">
+<hr />
+<h3>Help</h3>
+Message templates can be parametrized by using variables like ${this}. <br/>
+The following variables are currently understood: <br/>
+
+  <label>pipeline.name</label>
+  <label>pipeline.counter</label>
+  <label>pipeline.group</label>
+  <label>pipeline.stage.name</label>
+  <label>pipeline.stage.counter</label>
+  <label>pipeline.stage.state</label>
+  <label>pipeline.stage.result</label>
+
 </div>
