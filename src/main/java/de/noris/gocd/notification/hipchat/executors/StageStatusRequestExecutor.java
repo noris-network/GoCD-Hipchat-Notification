@@ -40,6 +40,7 @@ import java.net.URI;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class StageStatusRequestExecutor implements RequestExecutor {
     private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
@@ -52,11 +53,12 @@ public class StageStatusRequestExecutor implements RequestExecutor {
         this.pluginRequest = pluginRequest;
     }
 
+
     @Override
     public GoPluginApiResponse execute() throws Exception {
         HashMap<String, Object> responseJson = new HashMap<>();
         try {
-            ExecutionResult result = sendNotification();
+            ExecutionResult result = maybeSendNotification();
             if (result.isSuccessful()) {
                 responseJson.put("status", "success");
             } else {
@@ -70,7 +72,14 @@ public class StageStatusRequestExecutor implements RequestExecutor {
         return new DefaultGoPluginApiResponse(200, GSON.toJson(responseJson));
     }
 
-    protected ExecutionResult sendNotification() throws Exception {
+    /**
+     * This method decides whether to send a notification (determined via plugin configuration).
+     * If a notification is to be sent, it assembles the message
+     * (resolves environment variables) and passes it to doSendNotification
+     * for actual sending.
+     *
+     */
+    protected ExecutionResult maybeSendNotification() throws Exception {
         String pipelineName    = request.pipeline.name;
         String pipelineCounter = request.pipeline.counter;
         String pipelineStage   = request.pipeline.stage.name;
@@ -84,18 +93,18 @@ public class StageStatusRequestExecutor implements RequestExecutor {
         boolean doNotify = false;
         String message   = "";
         String color     = "";
-        HipchatNotificationPlugin.LOG.info("state is "+request.pipeline.stage.state);
+        HipchatNotificationPlugin.LOG.debug("state is "+request.pipeline.stage.state);
         if (request.pipeline.stage.state.equals("Building")) {
             doNotify = settings.isNotifyStart();
-            message  = settings.getMessageStart();
+            message  = fillTemplate(settings.getMessageStart());
             color    = settings.getColorStart();
         } else if (request.pipeline.stage.state.equals("Passed")) {
             doNotify = settings.isNotifySuccess();
-            message  = settings.getMessageSuccess();
+            message  = fillTemplate(settings.getMessageSuccess());
             color    = settings.getColorSuccess();
         } else if (request.pipeline.stage.state.equals("Failed")) {
             doNotify = settings.isNotifyFailure();
-            message  = settings.getMessageFailure();
+            message  = fillTemplate(settings.getMessageFailure());
             color    = settings.getColorFailure();
         } else {
             HipchatNotificationPlugin.LOG.warn("Unknown stage state: "+request.pipeline.stage.state);
@@ -108,6 +117,16 @@ public class StageStatusRequestExecutor implements RequestExecutor {
 
         HipchatNotificationPlugin.LOG.debug("Sending notification to "+roomName+" "+message);
 
+        return doSendNotification(roomName, message, color, serverUrl, token);
+
+    }
+
+    /**
+     * This method does the actual sending of a notification to HipChat.
+     *
+     * @throws Exception
+     */
+    protected ExecutionResult doSendNotification(String roomName, String message, String color, String serverUrl, String token) throws Exception {
         String url = serverUrl + "/v2/room/" + roomName + "/notification";
 
         SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
@@ -141,6 +160,27 @@ public class StageStatusRequestExecutor implements RequestExecutor {
         };
 
         return httpClient.execute(httpPost, handler);
-
     }
+
+    private String replaceVariables(String msg, Map<String, String> vars) {
+        String result = msg;
+        for (Map.Entry<String, String> var: vars.entrySet()) {
+            HipchatNotificationPlugin.LOG.info("Var: "+var.getKey()+"="+var.getValue());
+            result = result.replace("${"+var.getKey()+"}", var.getValue());
+        }
+        return result;
+    }
+
+    private String fillTemplate(String msg) {
+        Map<String, String> vars = new HashMap<String, String>();
+        vars.put("pipeline.name",    request.pipeline.name);
+        vars.put("pipeline.counter", request.pipeline.counter);
+        vars.put("pipeline.group",   request.pipeline.group);
+        vars.put("stage.name",       request.pipeline.stage.name);
+        vars.put("stage.counter",    request.pipeline.stage.counter);
+        vars.put("stage.state",      request.pipeline.stage.state);
+        vars.put("stage.result",     request.pipeline.stage.result);
+        return replaceVariables(msg, vars);
+    }
+
 }
