@@ -44,9 +44,10 @@ public class GetViewRequestExecutorTest {
 
         for (Map.Entry<String, Field> fieldEntry : GetPluginConfigurationExecutor.FIELDS.entrySet()) {
             assertThat(template, containsString("ng-model=\"" + fieldEntry.getKey() + "\""));
-            assertThat(template, containsString("<span class=\"form_error\" ng-show=\"GOINPUTNAME[" + fieldEntry.getKey() +
-                    "].$error.server\">{{GOINPUTNAME[" + fieldEntry.getKey() +
-                    "].$error.server}}</span>"));
+            String substring = "<span class=\"form_error\" ng-show=\"GOINPUTNAME[" + fieldEntry.getKey() +
+                    "].$error.server\">{{ GOINPUTNAME[" + fieldEntry.getKey() +
+                    "].$error.server }}</span>";
+            assertThat(template, containsString(substring));
         }
     }
 
