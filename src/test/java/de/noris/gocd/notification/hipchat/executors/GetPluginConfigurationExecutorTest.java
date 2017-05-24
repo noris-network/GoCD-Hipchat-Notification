@@ -44,32 +44,90 @@ public class GetPluginConfigurationExecutorTest {
         GoPluginApiResponse response = new GetPluginConfigurationExecutor().execute();
 
         assertThat(response.responseCode(), CoreMatchers.is(200));
-        String expectedJSON = "{\n" +
-                "  \"go_server_url\": {\n" +
-                "    \"display-name\": \"Go Server URL\",\n" +
-                "    \"required\": true,\n" +
-                "    \"secure\": false,\n" +
-                "    \"display-order\": \"0\"\n" +
-                "  },\n" +
-                "  \"api_url\": {\n" +
-                "    \"display-name\": \"API URL\",\n" +
-                "    \"required\": true,\n" +
-                "    \"secure\": false,\n" +
-                "    \"display-order\": \"1\"\n" +
-                "  },\n" +
-                "  \"api_user\": {\n" +
-                "    \"display-name\": \"API User\",\n" +
-                "    \"required\": true,\n" +
-                "    \"secure\": false,\n" +
-                "    \"display-order\": \"2\"\n" +
-                "  },\n" +
-                "  \"api_key\": {\n" +
-                "    \"display-name\": \"API Key\",\n" +
-                "    \"required\": true,\n" +
-                "    \"secure\": false,\n" +
-                "    \"display-order\": \"3\"\n" +
-                "  }\n" +
-                "}";
+        String expectedJSON = "{ \"hipchat_server_url\":" +
+                              "      {\"display-name\":\"Server URL\"," +
+                              "       \"default-value\":\"https://api.hipchat.com\"," +
+                              "       \"required\":true," +
+                              "       \"secure\":true," +
+                              "       \"display-order\":\"0\"" +
+                              "      }," +
+                              "      \"hipchat_room\":" +
+                              "        {\"display-name\":\"Room\"," +
+                              "         \"required\":true," +
+                              "         \"secure\":false," +
+                              "         \"display-order\":\"1\"" +
+                              "        }," +
+                              "     \"hipchat_token\":" +
+                              "        {\"display-name\":\"API Token\"," +
+                              "         \"required\":true," +
+                              "         \"secure\":true," +
+                              "         \"display-order\":\"2\"" +
+                              "        }," +
+                              "     \"notify_start\":" +
+                              "        {\"display-name\":\"Notify on job start\"," +
+                              "         \"default-value\":\"true\"," +
+                              "         \"required\":true," +
+                              "         \"secure\":false," +
+                              "         \"display-order\":\"4\"" +
+                              "        }," +
+                              "     \"message_start\":" +
+                              "       {\"display-name\":\"Start message\"," +
+                              "        \"default-value\":\"Job started\"," +
+                              "        \"required\":true," +
+                              "        \"secure\":false," +
+                              "        \"display-order\":\"5\"" +
+                              "       }," +
+                              "     \"color_start\":" +
+                              "       {\"display-name\":\"Color for start message\"," +
+                              "        \"default-value\":\"gray\"," +
+                              "        \"required\":true," +
+                              "        \"secure\":false," +
+                              "        \"display-order\":\"6\"" +
+                              "       }," +
+                              "     \"notify_success\":" +
+                              "       {\"display-name\":\"Notify on success\"," +
+                              "        \"default-value\":\"true\"," +
+                              "        \"required\":true," +
+                              "        \"secure\":false," +
+                              "        \"display-order\":\"7\"" +
+                              "       }," +
+                              "     \"message_success\":" +
+                              "       {\"display-name\":\"Success message\"," +
+                              "        \"default-value\":\"Job succeeded\"," +
+                              "        \"required\":true," +
+                              "        \"secure\":false," +
+                              "        \"display-order\":\"8\"" +
+                              "       }," +
+                              "     \"color_success\":" +
+                              "       {\"display-name\":\"Color for success message\"," +
+                              "        \"default-value\":\"green\"," +
+                              "        \"required\":true," +
+                              "        \"secure\":false," +
+                              "        \"display-order\":\"9\"" +
+                              "      }," +
+                              "     \"notify_failure\":" +
+                              "       {\"display-name\":\"Notify on failure\"," +
+                              "        \"default-value\":\"true\"," +
+                              "        \"required\":true," +
+                              "        \"secure\":false," +
+                              "        \"display-order\":\"10\"" +
+                              "       }," +
+                              "     \"message_failure\":" +
+                              "       {\"display-name\":\"Failure message\"," +
+                              "        \"default-value\":\"Job failed\"," +
+                              "        \"required\":true," +
+                              "        \"secure\":false," +
+                              "        \"display-order\":\"11\"" +
+                              "       }," +
+                              "     \"color_failure\":" +
+                              "       {\"display-name\":\"Color for failure message\"," +
+                              "        \"default-value\":\"red\"," +
+                              "        \"required\":true," +
+                              "        \"secure\":false," +
+                              "        \"display-order\":\"12\"" +
+                              "       }" +
+                              "} \" " +
+                              "}";
         JSONAssert.assertEquals(expectedJSON, response.responseBody(), true);
 
     }
