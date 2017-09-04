@@ -39,6 +39,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,11 +65,16 @@ public class StageStatusRequestExecutor implements RequestExecutor {
                 responseJson.put("status", "success");
             } else {
                 responseJson.put("status", "failure");
-                responseJson.put("messages", result.getMessages());
+                List<String> messages = result.getMessages();
+                if (messages != null && !messages.isEmpty()) {
+                    responseJson.put("messages", messages);
+                }
             }
         } catch (Exception e) {
             responseJson.put("status", "failure");
-            responseJson.put("messages", Arrays.asList(e.getMessage()));
+            List<String> messages = new ArrayList<String>();
+            messages.add(e.getMessage());
+            responseJson.put("messages", messages);
         }
         return new DefaultGoPluginApiResponse(200, GSON.toJson(responseJson));
     }
