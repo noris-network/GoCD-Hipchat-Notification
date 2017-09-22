@@ -35,7 +35,8 @@ public class NotificationInterestedInExecutor implements RequestExecutor {
         jsonObject.add("notifications", notifications);
 
         DefaultGoPluginApiResponse defaultGoPluginApiResponse = new DefaultGoPluginApiResponse(200);
-        defaultGoPluginApiResponse.setResponseBody(GSON.toJson(jsonObject));
+        String json = GSON.toJson(jsonObject);
+        defaultGoPluginApiResponse.setResponseBody(json);
         return defaultGoPluginApiResponse;
     }
 }

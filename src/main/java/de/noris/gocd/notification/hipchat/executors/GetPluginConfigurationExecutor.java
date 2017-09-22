@@ -16,6 +16,8 @@
 
 package de.noris.gocd.notification.hipchat.executors;
 
+import com.thoughtworks.go.plugin.api.logging.Logger;
+import de.noris.gocd.notification.hipchat.HipchatNotificationPlugin;
 import de.noris.gocd.notification.hipchat.RequestExecutor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,6 +30,7 @@ import java.util.Map;
 public class GetPluginConfigurationExecutor implements RequestExecutor {
 
     private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+    private static final Logger LOG = Logger.getLoggerFor(HipchatNotificationPlugin.class);
 
     // default values are only stored but not shown in the form
     public static final Field HIPCHAT_SERVER_URL = new NonBlankField("hipchat_server_url", "Server URL", "https://api.hipchat.com", true, true, "0");
@@ -68,7 +71,9 @@ public class GetPluginConfigurationExecutor implements RequestExecutor {
     }
 
     public GoPluginApiResponse execute() {
-        return new DefaultGoPluginApiResponse(200, GSON.toJson(FIELDS));
+        String json = GSON.toJson(FIELDS);
+        LOG.info("PluginConfig: Returning \n"+json);
+        return new DefaultGoPluginApiResponse(200, json);
     }
 }
 

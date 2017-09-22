@@ -16,6 +16,7 @@
 
 package de.noris.gocd.notification.hipchat.executors;
 
+import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.response.execution.ExecutionResult;
 import de.noris.gocd.notification.hipchat.*;
 import de.noris.gocd.notification.hipchat.requests.StageStatusRequest;
@@ -46,6 +47,7 @@ import java.util.Map;
 
 public class StageStatusRequestExecutor implements RequestExecutor {
     private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+    private static final Logger LOG = Logger.getLoggerFor(HipchatNotificationPlugin.class);
 
     private final StageStatusRequest request;
     private final PluginRequest pluginRequest;
@@ -76,7 +78,9 @@ public class StageStatusRequestExecutor implements RequestExecutor {
             messages.add(e.getMessage());
             responseJson.put("messages", messages);
         }
-        return new DefaultGoPluginApiResponse(200, GSON.toJson(responseJson));
+        String json = GSON.toJson(responseJson);
+        LOG.info("StageStatus: Returning \n"+json);
+        return new DefaultGoPluginApiResponse(200, json);
     }
 
     /**

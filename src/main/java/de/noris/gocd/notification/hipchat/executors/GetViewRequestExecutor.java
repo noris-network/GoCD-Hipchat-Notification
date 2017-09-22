@@ -16,6 +16,8 @@
 
 package de.noris.gocd.notification.hipchat.executors;
 
+import com.thoughtworks.go.plugin.api.logging.Logger;
+import de.noris.gocd.notification.hipchat.HipchatNotificationPlugin;
 import de.noris.gocd.notification.hipchat.RequestExecutor;
 import de.noris.gocd.notification.hipchat.utils.Util;
 import com.google.gson.Gson;
@@ -25,13 +27,16 @@ import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
 public class GetViewRequestExecutor implements RequestExecutor {
     private static final Gson GSON = new Gson();
+    private static final Logger LOG = Logger.getLoggerFor(HipchatNotificationPlugin.class);
 
     @Override
     public GoPluginApiResponse execute() throws Exception {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("template", Util.readResource("/plugin-settings.template.html"));
         DefaultGoPluginApiResponse defaultGoPluginApiResponse = new DefaultGoPluginApiResponse(200);
-        defaultGoPluginApiResponse.setResponseBody(GSON.toJson(jsonObject));
+        String json = GSON.toJson(jsonObject);
+        defaultGoPluginApiResponse.setResponseBody(json);
+        LOG.info("ViewRequest: Returning \n"+json);
         return defaultGoPluginApiResponse;
     }
 

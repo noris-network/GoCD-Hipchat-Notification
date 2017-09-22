@@ -16,6 +16,7 @@
 
 package de.noris.gocd.notification.hipchat.executors;
 
+import com.thoughtworks.go.plugin.api.logging.Logger;
 import de.noris.gocd.notification.hipchat.HipchatNotificationPlugin;
 import de.noris.gocd.notification.hipchat.RequestExecutor;
 import de.noris.gocd.notification.hipchat.requests.ValidatePluginSettings;
@@ -27,6 +28,9 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class ValidateConfigurationExecutor implements RequestExecutor {
+
+    private static final Logger LOG = Logger.getLoggerFor(HipchatNotificationPlugin.class);
+
     private static final Gson GSON = new Gson();
 
     private final ValidatePluginSettings settings;
@@ -46,7 +50,8 @@ public class ValidateConfigurationExecutor implements RequestExecutor {
                 result.add(validationError);
             }
         }
-
-        return DefaultGoPluginApiResponse.success(GSON.toJson(result));
+        String json = GSON.toJson(result);
+        LOG.info("ValidateConfig: Returning \n"+json);
+        return DefaultGoPluginApiResponse.success(json);
     }
 }
