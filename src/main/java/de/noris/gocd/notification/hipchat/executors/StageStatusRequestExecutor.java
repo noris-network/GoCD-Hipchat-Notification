@@ -75,7 +75,13 @@ public class StageStatusRequestExecutor implements RequestExecutor {
         } catch (Exception e) {
             responseJson.put("status", "failure");
             List<String> messages = new ArrayList<String>();
-            messages.add(e.getMessage());
+            if (e.getMessage() != null) {
+                messages.add(e.getMessage());
+            } else {
+                messages.add("Exception message is null");
+            }
+            LOG.warn("StageStatus: Caught Exception \n", e);
+            LOG.warn("StageStatus: Caught \n"+e.getMessage());
             responseJson.put("messages", messages);
         }
         String json = GSON.toJson(responseJson);
