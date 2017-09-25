@@ -14,7 +14,18 @@
  * limitations under the License.
  */
 
+/*
+If you want to use the maven deployer, set the
+following properties in gradle.properties (here or in your home)
+or via -Durl=...
+
+url
+username
+password
+
+*/
 apply plugin: 'java'
+apply plugin: 'maven'
 
 group = 'de.noris'
 version = '0.1-SNAPSHOT'
@@ -71,3 +82,17 @@ jar {
     into "lib/"
   }
 }
+
+uploadArchives {
+    repositories {
+       mavenDeployer {          
+             repository(url: url) {
+                authentication(userName: username, password: password)
+             }
+             pom.version = version
+             pom.artifactId = "hipchat"
+             pom.groupId = group
+       }
+    }
+}
+
