@@ -83,6 +83,7 @@ jar {
   }
 }
 
+
 uploadArchives {
     repositories {
        mavenDeployer {          
@@ -91,7 +92,7 @@ uploadArchives {
              }
              pom.version = version
              pom.artifactId = "hipchat"
-             pom.groupId = group
+             pom.groupId = project.group
        }
     }
 }
