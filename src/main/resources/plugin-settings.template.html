@@ -59,7 +59,8 @@ Ensure that the keys you use are also declared in the GetPluginConfigurationExec
 <div class="form_item_block">
   <label>Job start message:</label>
   <label>Environment variables accessible with $ notation</label>
-  <input type="text" ng-model="message_start"/>
+<!--  <input type="text" ng-model="message_start"/> -->
+  <textarea cols="50" rows="10" ng-model="message_start"/>
   <span class="form_error" ng-show="GOINPUTNAME[message_start].$error.server">{{ GOINPUTNAME[message_start].$error.server }}</span>
 </div>
 <div class="form_item_block">
@@ -88,7 +89,8 @@ Ensure that the keys you use are also declared in the GetPluginConfigurationExec
 <div class="form_item_block">
   <label>Success message:</label>
   <label>Environment variables accessible with $ notation</label>
-  <input type="text" ng-model="message_success"/>
+<!--  <input type="text" ng-model="message_success"/> -->
+  <textarea cols="50" rows="10" ng-model="message_success"/>
   <span class="form_error" ng-show="GOINPUTNAME[message_success].$error.server">{{ GOINPUTNAME[message_success].$error.server }}</span>
 </div>
 <div class="form_item_block">
@@ -117,7 +119,8 @@ Ensure that the keys you use are also declared in the GetPluginConfigurationExec
 <div class="form_item_block">
   <label>Failure message:</label>
   <label>Environment variables accessible with $ notation</label>
-  <input type="text" ng-model="message_failure"/>
+<!--  <input type="text" ng-model="message_failure"/> -->
+  <textarea cols="50" rows="10" ng-model="message_failure"/>
   <span class="form_error" ng-show="GOINPUTNAME[message_failure].$error.server">{{ GOINPUTNAME[message_failure].$error.server }}</span>
 </div>
 <div class="form_item_block">

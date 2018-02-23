@@ -17,11 +17,11 @@ public class HipchatRequest {
         }
 
         public HipchatRequest(String message) {
-            this("gray", message, false, "text");
+            this("gray", message, false, "html");
         }
 
         public HipchatRequest(String color, String message) {
-            this(color, message, false, "text");
+            this(color, message, false, "html");
         }
 
         @SerializedName("color")
@@ -34,6 +34,6 @@ public class HipchatRequest {
         public boolean notify = false;
 
         @SerializedName("message_format")
-        public String messageFormat = "text";
+        public String messageFormat = "html";
 
 }
